@@ -128,9 +128,17 @@ export default function Dashboard() {
     setSavingTheme(true)
     const supabase = createClient()
 
+    const updatedThemeConfig = {
+      ...(shop.theme_config || {}),
+      palette: {
+        ...(shop.theme_config?.palette || {}),
+        accent: pendingTheme,
+      },
+    }
+
     const { data, error } = await supabase
       .from('shops')
-      .update({ theme_color: pendingTheme })
+      .update({ theme_config: updatedThemeConfig })
       .eq('id', shop.id)
       .select()
       .single()
@@ -298,7 +306,7 @@ export default function Dashboard() {
                 <span
                   style={{ backgroundColor: color.value }}
                   className={`w-10 h-10 rounded-full border-2 ${
-                    (pendingTheme || shop.theme_color) === color.value
+                    (pendingTheme || shop.theme_config?.palette?.accent) === color.value
                       ? 'border-[#241F1C]'
                       : 'border-transparent'
                   }`}
@@ -308,7 +316,7 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {pendingTheme && pendingTheme !== shop.theme_color && (
+          {pendingTheme && pendingTheme !== shop.theme_config?.palette?.accent && (
             <div className="flex gap-3">
               <button
                 onClick={handleThemeConfirm}
@@ -329,6 +337,14 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <a
+            href="/dashboard/theme-studio"
+            className="bg-[#FBF6EC] rounded-2xl shadow-md border border-[#E3D2B4] px-6 py-6 hover:border-[#A6472F] transition-colors sm:col-span-2"
+          >
+            <h2 className="font-semibold text-[#241F1C] mb-1">Theme Studio</h2>
+            <p className="text-sm text-[#6B6055]">Pick a template and customize your storefront's look.</p>
+          </a>
+
           <a
             href="/dashboard/products"
             className="bg-[#FBF6EC] rounded-2xl shadow-md border border-[#E3D2B4] px-6 py-6 hover:border-[#A6472F] transition-colors"
