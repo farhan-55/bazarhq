@@ -31,18 +31,26 @@ export default function Signup() {
 
     const supabase = createClient()
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     })
 
-    setLoading(false)
-
     if (error) {
+      setLoading(false)
       setError(error.message)
       return
     }
 
+    if (data.user) {
+      await supabase.from('profiles').insert({
+        id: data.user.id,
+        role: 'merchant',
+        email: data.user.email,
+      })
+    }
+
+    setLoading(false)
     router.push('/create-shop')
   }
 
