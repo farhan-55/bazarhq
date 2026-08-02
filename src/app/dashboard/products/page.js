@@ -41,10 +41,17 @@ export default function ProductsList() {
   return (
     <div className="min-h-screen bg-[#F7EFE0] px-6 py-10">
       <div className="max-w-3xl mx-auto">
+        <a
+          href="/dashboard"
+          className="inline-block text-sm text-[#8A7C63] hover:text-[#A6472F] mb-4"
+        >
+          Back to dashboard
+        </a>
+
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-[11px] tracking-[0.18em] uppercase text-[#8A7C63] font-medium">
-              BazarHQ · Products
+              BazarHQ - Products
             </p>
             <h1 className="text-[26px] font-semibold text-[#241F1C]">Your products</h1>
           </div>
@@ -84,6 +91,12 @@ export default function ProductsList() {
                   <h3 className="font-semibold text-[#241F1C]">{product.name}</h3>
                   <p className="text-sm text-[#6B6055]">৳{product.price}</p>
                   <p className="text-xs text-[#8A7C63] mt-1">Stock: {product.stock_quantity}</p>
+                  <a
+                    href={`/dashboard/products/${product.id}/edit`}
+                    className="inline-block mt-2 text-xs font-medium text-[#A6472F] hover:underline"
+                  >
+                    Edit
+                  </a>
                 </div>
               </div>
             ))}

@@ -11,7 +11,6 @@ export default function CreateShop() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // Shop name theke automatic slug generate kora (e.g. "Rahim's Leather" -> "rahims-leather")
   const handleNameChange = (value) => {
     setShopName(value)
     const generatedSlug = value
@@ -29,7 +28,6 @@ export default function CreateShop() {
 
     const supabase = createClient()
 
-    // Logged-in user ke check kora
     const { data: { user }, error: userError } = await supabase.auth.getUser()
 
     if (userError || !user) {
@@ -59,7 +57,6 @@ export default function CreateShop() {
       return
     }
 
-    // Shop create hole product add korার page e pathiye dao
     router.push('/dashboard')
   }
 
@@ -93,7 +90,10 @@ export default function CreateShop() {
 
           {slug && (
             <p className="text-xs text-[#8A7C63]">
-              Your shop URL: <span className="font-medium text-[#A6472F]">{slug}</span>.bazarhq.com
+              Your shop URL:{' '}
+              <span className="font-medium text-[#A6472F]">
+                /shop/{slug}
+              </span>
             </p>
           )}
 

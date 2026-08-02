@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import { Fraunces, Inter } from 'next/font/google'
 import { createClient } from '@/utils/supabase/client'
 
+const [password, setPassword] = useState('')
+const [showPassword, setShowPassword] = useState(false)
+
 const fraunces = Fraunces({ subsets: ['latin'], weight: ['500', '600'], style: ['normal', 'italic'] })
 const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600'] })
 
@@ -76,15 +79,24 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#5B5347] mb-1.5">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full bg-transparent border-b-2 border-[#DDCBAE] focus:border-[#A6472F] outline-none py-2 text-[#241F1C] placeholder:text-[#B8AA90] transition-colors"
-              />
-            </div>
+  <label className="block text-xs font-medium text-[#5B5347] mb-1.5">Password</label>
+  <div className="relative">
+    <input
+      type={showPassword ? 'text' : 'password'}
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+      className="w-full bg-transparent border-b-2 border-[#DDCBAE] focus:border-[#A6472F] outline-none py-2 pr-8 text-[#241F1C] placeholder:text-[#B8AA90] transition-colors"
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-0 top-1/2 -translate-y-1/2 text-[#8A7C63] hover:text-[#A6472F] text-xs font-medium"
+    >
+      {showPassword ? 'Hide' : 'Show'}
+    </button>
+  </div>
+</div>
 
             {error && (
               <p className="text-sm text-[#A6472F] bg-[#A6472F]/10 px-3 py-2 rounded-lg">
