@@ -18,13 +18,14 @@ export default function Cart() {
 
       const { data: shop } = await supabase
         .from('shops')
-        .select('theme_color')
+        .select('theme_color, theme_config')
         .eq('slug', slug)
         .eq('is_published', true)
         .single()
 
-      if (shop && shop.theme_color) {
-        setAccent(shop.theme_color)
+      const accentColor = shop?.theme_config?.palette?.accent || shop?.theme_color
+      if (accentColor) {
+        setAccent(accentColor)
       }
 
       const existingCart = JSON.parse(localStorage.getItem(cartKey) || '[]')
