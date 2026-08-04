@@ -7,7 +7,6 @@ import { createClient } from '@/utils/supabase/client'
 export default function SuperAdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [shops, setShops] = useState([])
-  const [merchantCount, setMerchantCount] = useState(0)
   const [orderCount, setOrderCount] = useState(0)
   const [totalRevenue, setTotalRevenue] = useState(0)
   const [updatingId, setUpdatingId] = useState(null)
@@ -63,7 +62,6 @@ export default function SuperAdminDashboard() {
       }))
 
       setShops(shopsWithEmail)
-      setMerchantCount((profilesData || []).length)
       setOrderCount((ordersData || []).length)
       setTotalRevenue(
         (ordersData || []).reduce((sum, o) => sum + parseFloat(o.total_amount || 0), 0)
@@ -126,11 +124,7 @@ export default function SuperAdminDashboard() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-          <div className="bg-[#241F1C] rounded-2xl border border-[#3A332C] px-5 py-4">
-            <p className="text-xs text-[#8A7C63] mb-1">Total merchants</p>
-            <p className="text-2xl font-semibold text-[#FBF6EC]">{merchantCount}</p>
-          </div>
+        <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="bg-[#241F1C] rounded-2xl border border-[#3A332C] px-5 py-4">
             <p className="text-xs text-[#8A7C63] mb-1">Total shops</p>
             <p className="text-2xl font-semibold text-[#FBF6EC]">{shops.length}</p>
@@ -139,7 +133,7 @@ export default function SuperAdminDashboard() {
             <p className="text-xs text-[#8A7C63] mb-1">Total orders</p>
             <p className="text-2xl font-semibold text-[#FBF6EC]">{orderCount}</p>
           </div>
-          <div className="bg-[#241F1C] rounded-2xl border border-[#3A332C] px-5 py-4 col-span-2 sm:col-span-1">
+          <div className="bg-[#241F1C] rounded-2xl border border-[#3A332C] px-5 py-4">
             <p className="text-xs text-[#8A7C63] mb-1">Total revenue</p>
             <p className="text-2xl font-semibold text-[#FBF6EC]">
               Tk {totalRevenue.toFixed(2)}

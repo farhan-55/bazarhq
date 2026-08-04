@@ -22,6 +22,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [showReset, setShowReset] = useState(false)
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetSent, setResetSent] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
   const router = useRouter()
 
   const handleLogin = async (e) => {
@@ -40,6 +44,20 @@ export default function Login() {
     }
 
     router.push('/dashboard')
+  }
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
+    setResetLoading(true)
+
+    const supabase = createClient()
+
+    await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+
+    setResetLoading(false)
+    setResetSent(true)
   }
 
   return (
@@ -122,6 +140,49 @@ export default function Login() {
               {loading ? 'Logging in...' : 'Log in'}
             </button>
           </form>
+
+          <div className="mt-3">
+            {!showReset ? (
+              <button
+                type="button"
+                onClick={() => setShowReset(true)}
+                className="text-xs text-[#8A7C63] hover:text-[#A6472F]"
+              >
+                Forgot password?
+              </button>
+            ) : resetSent ? (
+              <p className="text-xs text-[#5B5347] bg-[#E3D2B4]/40 px-3 py-2 rounded-lg">
+                If an account exists for that email, a reset link has been sent.
+              </p>
+            ) : (
+              <form onSubmit={handleResetPassword} className="mt-2 space-y-2">
+                <input
+                  type="email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  required
+                  placeholder="Enter your email"
+                  className="w-full bg-transparent border-b-2 border-[#DDCBAE] focus:border-[#A6472F] outline-none py-1.5 text-sm text-[#241F1C] placeholder:text-[#B8AA90]"
+                />
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={resetLoading}
+                    className="text-xs font-medium text-[#A6472F] hover:underline disabled:opacity-50"
+                  >
+                    {resetLoading ? 'Sending...' : 'Send reset link'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowReset(false)}
+                    className="text-xs text-[#8A7C63] hover:text-[#A6472F]"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
 
           <p className="text-xs text-[#8A7C63] text-center mt-6">
             Don&apos;t have a shop yet?{' '}
