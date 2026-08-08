@@ -27,7 +27,10 @@ export default async function ShopStorefront({ params }) {
     .order("created_at", { ascending: false })
 
   const themeConfig = shop.theme_config || {}
-  const palette = themeConfig.palette || { accent: shop.theme_color || "#A6472F" }
+  const palette = themeConfig.palette || {
+    accent: shop.theme_color || "#A6472F",
+  }
+
   const layout = themeConfig.layout || getDefaultLayout()
 
   const blocks = (layout.blocks || [])
@@ -35,20 +38,31 @@ export default async function ShopStorefront({ params }) {
     .sort((a, b) => a.order - b.order)
 
   return (
-    <ThemeProvider palette={palette}>
-      {blocks.map((block) => {
-        const Block = BLOCK_REGISTRY[block.type]
-        if (!Block) return null
-        return (
-          <Block
-            key={block.id}
-            shop={shop}
-            products={products}
-            slug={slug}
-            props={block.props}
-          />
-        )
-      })}
-    </ThemeProvider>
+    <>
+      <a
+        href="/"
+        className="block bg-[#FBF6EC] border-b border-[#E3D2B4] px-6 py-2 text-xs text-[#8A7C63] hover:text-[#241F1C] font-medium"
+      >
+        ← BazarHQ
+      </a>
+
+      <ThemeProvider palette={palette}>
+        {blocks.map((block) => {
+          const Block = BLOCK_REGISTRY[block.type]
+
+          if (!Block) return null
+
+          return (
+            <Block
+              key={block.id}
+              shop={shop}
+              products={products}
+              slug={slug}
+              props={block.props}
+            />
+          )
+        })}
+      </ThemeProvider>
+    </>
   )
 }
